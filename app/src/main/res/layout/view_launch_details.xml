@@ -1,38 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp">
+    android:layout_margin="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/launch_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:importantForAccessibility="no"
-            android:scaleType="centerCrop" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3" />
 
         <TextView
             android:id="@+id/launch_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            app:layout_constraintStart_toEndOf="@id/launch_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="12sp"
             android:text="Boonda!"
-            android:padding="16dp"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            app:layout_constraintBottom_toTopOf="@id/launch_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/launch_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/launch_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:padding="12sp"
+            android:text="Launch Date: 04-06-2010"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
+            app:layout_constraintBottom_toTopOf="@id/mission_success"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/launch_image"
+            app:layout_constraintTop_toBottomOf="@id/launch_name" />
+
+        <TextView
+            android:id="@+id/mission_success"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:padding="12sp"
+            android:text="Mission Success: "
+            android:textAppearance="?attr/textAppearanceSubtitle2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/launch_image"
+            app:layout_constraintTop_toBottomOf="@id/launch_date" />
+
+        <ImageView
+            android:id="@+id/launch_outcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/mission_success"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/launch_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

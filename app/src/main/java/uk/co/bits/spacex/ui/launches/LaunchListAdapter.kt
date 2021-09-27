@@ -30,7 +30,12 @@ class LaunchListAdapter(
         val url: String = launchItem.largeImageUrl
         Glide.with(context)
             .load(url)
-            .into(viewHolder.imageView)    }
+            .fitCenter()
+            .into(viewHolder.imageView)
+
+        val resultImage = if (launchItem.success) R.drawable.ic_baseline_check_24 else R.drawable.ic_baseline_clear_24
+        viewHolder.launchOutcome.setImageResource(resultImage)
+    }
 
     override fun getItemCount(): Int {
         return launchData.size
@@ -39,5 +44,6 @@ class LaunchListAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.launch_name)
         val imageView: ImageView = view.findViewById(R.id.launch_image)
+        val launchOutcome: ImageView = view.findViewById(R.id.launch_outcome)
     }
 }
