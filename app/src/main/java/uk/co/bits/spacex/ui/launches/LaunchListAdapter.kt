@@ -27,14 +27,18 @@ class LaunchListAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val launchItem = launchData[position]
         viewHolder.textView.text = launchItem.rocketName
-        val url: String = launchItem.largeImageUrl
+        val url: String = launchItem.smallImageUrl
         Glide.with(context)
             .load(url)
+            .placeholder(R.drawable.ic_baseline_downloading_24)
             .fitCenter()
             .into(viewHolder.imageView)
 
-        val resultImage = if (launchItem.success) R.drawable.ic_baseline_check_24 else R.drawable.ic_baseline_clear_24
-        viewHolder.launchOutcome.setImageResource(resultImage)
+        when (launchItem.success) {
+            true -> viewHolder.launchOutcome.setImageResource(R.drawable.ic_baseline_check_24)
+            false -> viewHolder.launchOutcome.setImageResource(R.drawable.ic_baseline_clear_24)
+            else -> viewHolder.launchOutcome.setImageResource(R.drawable.ic_baseline_help_24)
+        }
     }
 
     override fun getItemCount(): Int {

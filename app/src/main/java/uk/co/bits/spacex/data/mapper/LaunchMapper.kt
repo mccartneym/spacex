@@ -9,8 +9,7 @@ class LaunchMapper @Inject constructor() {
     fun toLaunch(launchResponse: LaunchResponse): Launch {
         return Launch(
             smallImageUrl = launchResponse.links.patch.small.orEmpty(),
-            largeImageUrl = launchResponse.links.patch.large.orEmpty(),
-            success = launchResponse.success?: false, // or look at landing success?
+            success = launchResponse.success,
             rocketName = launchResponse.name,
             localDate = launchResponse.date_local
         )

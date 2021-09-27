@@ -9,7 +9,4 @@ data class LaunchResponse constructor(
 
 data class Links constructor(val patch: Patch)
 
-data class Patch constructor(
-    val small: String?,
-    val large: String?
-)
+data class Patch constructor(val small: String?)
