@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SpaceX</string>
+    <string name="launches_title">Falcon 9 Launches</string>
+</resources>
