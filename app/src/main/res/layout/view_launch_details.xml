@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
@@ -26,12 +27,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:padding="12sp"
-            android:text="Boonda!"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintBottom_toTopOf="@id/launch_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/launch_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Falcon 9 Test Flight" />
 
         <TextView
             android:id="@+id/launch_date"
@@ -39,12 +40,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:padding="12sp"
-            android:text="Launch Date: 04-06-2010"
+            android:text="@string/launch_date"
             android:textAppearance="?attr/textAppearanceSubtitle2"
             app:layout_constraintBottom_toTopOf="@id/mission_success"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/launch_image"
-            app:layout_constraintTop_toBottomOf="@id/launch_name" />
+            app:layout_constraintTop_toBottomOf="@id/launch_name"
+            tools:text="Launch Date: 04-06-2010" />
 
         <TextView
             android:id="@+id/mission_success"
@@ -52,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:padding="12sp"
-            android:text="Mission Success: "
+            android:text="@string/mission_success"
             android:textAppearance="?attr/textAppearanceSubtitle2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/launch_image"
@@ -63,9 +65,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/mission_success"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/launch_date" />
+            app:layout_constraintStart_toEndOf="@id/mission_success"
+            app:layout_constraintTop_toBottomOf="@id/launch_date"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
