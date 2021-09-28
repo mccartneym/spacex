@@ -73,4 +73,5 @@ dependencies {
     kaptTest "com.google.dagger:hilt-compiler:$dagger_version"
 
     testImplementation "junit:junit:$junit_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
 }
