@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import uk.co.bits.spacex.R
 import uk.co.bits.spacex.databinding.FragmentLaunchesBinding
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.*
 
@@ -29,12 +29,16 @@ class LaunchListFragment : Fragment() {
     }
 
     private fun FragmentLaunchesBinding.observeViewModel() {
+
         viewModel.listViewState.observe(viewLifecycleOwner) { state ->
+            views.children.forEach { view -> view.isVisible = false }
+
             when (state) {
                 ListLoading -> launchProgressbar.isVisible = true
-                ListEmpty, ListError -> launchProgressbar.isVisible = false
+                ListEmpty -> emptyList.isVisible = true
+                ListError -> error.isVisible = true
                 is ListHasContent -> {
-                    launchProgressbar.isVisible = false
+                    launchList.isVisible = true
                     launchList.adapter = LaunchListAdapter(requireContext(), state.launchList)
                 }
             }

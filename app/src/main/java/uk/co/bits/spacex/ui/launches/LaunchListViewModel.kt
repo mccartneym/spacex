@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import uk.co.bits.spacex.data.model.Launch
+import uk.co.bits.spacex.ui.launches.LaunchListViewState.*
 import uk.co.bits.spacex.util.DispatcherProvider
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class LaunchListViewModel @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         viewModelScope.launch(dispatcherProvider.default()) {
-            listViewState.postValue(LaunchListViewState.ListLoading)
+            listViewState.postValue(ListLoading)
             val launchListResult = getLaunchesInteractor.getLaunches()
             updateUi(launchListResult)
         }
@@ -29,13 +30,13 @@ class LaunchListViewModel @Inject constructor(
             result.isSuccess -> {
                 val list = result.getOrDefault(emptyList())
                 if (list.isNotEmpty()) {
-                    listViewState.postValue(LaunchListViewState.ListHasContent(list))
+                    listViewState.postValue(ListHasContent(list))
                 } else {
-                    listViewState.postValue(LaunchListViewState.ListEmpty)
+                    listViewState.postValue(ListEmpty)
                 }
             }
             result.isFailure -> {
-                listViewState.postValue(LaunchListViewState.ListError)
+                listViewState.postValue(ListError)
             }
         }
     }
