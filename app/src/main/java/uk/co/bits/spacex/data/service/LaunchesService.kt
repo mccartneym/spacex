@@ -1,11 +1,10 @@
 package uk.co.bits.spacex.data.service
 
-import uk.co.bits.spacex.data.api.ApiService
 import uk.co.bits.spacex.data.api.LaunchesApiService
 import uk.co.bits.spacex.data.response.LaunchResponse
 import javax.inject.Inject
 
-class LaunchesService @Inject constructor(private val launchesApiService: ApiService) {
+class LaunchesService @Inject constructor(private val launchesApiService: LaunchesApiService) {
 
 //    private val launchesApiService: LaunchesApiService
 //        get() = apiProvider.getEmailReceiptApiService()

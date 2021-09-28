@@ -4,7 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import uk.co.bits.spacex.data.response.LaunchResponse
 
-interface LaunchesApiService : ApiService {
+interface LaunchesApiService {
 
     @GET("launches")
     suspend fun getLaunches(): Response<List<LaunchResponse>>

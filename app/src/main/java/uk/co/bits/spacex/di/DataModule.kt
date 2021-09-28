@@ -9,7 +9,6 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import uk.co.bits.spacex.data.api.ApiService
 import uk.co.bits.spacex.data.api.LaunchesApiService
 import uk.co.bits.spacex.data.mapper.LaunchMapper
 import uk.co.bits.spacex.data.repository.LaunchesRepository
@@ -43,7 +42,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideLaunchesApiService(retrofit: Retrofit): ApiService = retrofit.create(LaunchesApiService::class.java)
+    fun provideLaunchesApiService(retrofit: Retrofit): LaunchesApiService = retrofit.create(LaunchesApiService::class.java)
 
     @Singleton
     @Provides
