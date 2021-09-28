@@ -21,7 +21,7 @@ class LaunchListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val listViewStateObserver: Observer<LaunchListViewState> = mockk(relaxed = true)
-    private val getLaunchesInteractor: GetLaunchesInteractor = mockk(relaxed = true)
+    private val getLaunchesInteractor: GetLaunchesInteractor = mockk()
     private lateinit var sut: LaunchListViewModel
 
     @Before
