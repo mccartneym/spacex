@@ -1,5 +1,6 @@
 package uk.co.bits.spacex
 
+import uk.co.bits.spacex.data.model.Launch
 import uk.co.bits.spacex.data.response.LaunchResponse
 import uk.co.bits.spacex.data.response.Links
 import uk.co.bits.spacex.data.response.Patch
@@ -52,10 +53,10 @@ val LAUNCH_RESPONSE3 = LaunchResponse(
     date_unix = DATE3
 )
 
-//val LAUNCH1 = Launch("url1", false, "launch name1", "04-06-2010")
-//val LAUNCH2 = Launch("url2", true, "launch name2", "05-07-2011")
-//val LAUNCH3 = Launch("url3", false, "launch name3", "06-08-2012")
-//
-//val LAUNCH_LIST = listOf(LAUNCH1, LAUNCH2, LAUNCH3)
+val LAUNCH1 = Launch(URL1, MISSION_SUCCESS1, NAME1, PARSED_DATE1)
+val LAUNCH2 = Launch(URL2, MISSION_SUCCESS2, NAME2, PARSED_DATE2)
+val LAUNCH3 = Launch(URL3, MISSION_SUCCESS3, NAME3, PARSED_DATE3)
+
+val LAUNCH_LIST = listOf(LAUNCH1, LAUNCH2, LAUNCH3)
 
 val LAUNCH_RESPONSE_LIST = listOf(LAUNCH_RESPONSE1, LAUNCH_RESPONSE2, LAUNCH_RESPONSE3)
