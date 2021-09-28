@@ -10,7 +10,7 @@ class LaunchesService @Inject constructor(private val launchesApiService: Launch
 //        get() = apiProvider.getEmailReceiptApiService()
 
     suspend fun getLaunches(): List<LaunchResponse>? {
-        val response = (launchesApiService as LaunchesApiService).getLaunches()
+        val response = launchesApiService.getLaunches()
 
         return if (response.isSuccessful) {
             response.body()

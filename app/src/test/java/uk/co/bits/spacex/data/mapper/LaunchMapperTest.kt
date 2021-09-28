@@ -5,9 +5,7 @@ import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import uk.co.bits.spacex.data.response.LaunchResponse
-import uk.co.bits.spacex.data.response.Links
-import uk.co.bits.spacex.data.response.Patch
+import uk.co.bits.spacex.*
 
 class LaunchMapperTest {
 
@@ -17,52 +15,34 @@ class LaunchMapperTest {
     @Before
     fun setUp() {
         sut = LaunchMapper(dateMapper)
-        every { dateMapper.parseUnixDate(DATE) } returns PARSED_DATE
+        every { dateMapper.parseUnixDate(DATE1) } returns PARSED_DATE1
     }
 
     @Test
     fun `given LaunchResponse object, when parsing to model, then URL is parsed successfully`() {
-        val result = sut.toLaunch(LAUNCH_RESPONSE)
+        val result = sut.toLaunch(LAUNCH_RESPONSE1)
 
-        assertEquals(URL, result.smallImageUrl)
+        assertEquals(URL1, result.smallImageUrl)
     }
 
     @Test
     fun `given LaunchResponse object, when parsing to model, then mission success state is parsed successfully`() {
-        val result = sut.toLaunch(LAUNCH_RESPONSE)
+        val result = sut.toLaunch(LAUNCH_RESPONSE1)
 
-        assertEquals(MISSION_SUCCESS, result.success)
+        assertEquals(MISSION_SUCCESS1, result.success)
     }
 
     @Test
     fun `given LaunchResponse object, when parsing to model, then launch name is parsed successfully`() {
-        val result = sut.toLaunch(LAUNCH_RESPONSE)
+        val result = sut.toLaunch(LAUNCH_RESPONSE1)
 
-        assertEquals(NAME, result.name)
+        assertEquals(NAME1, result.name)
     }
 
     @Test
     fun `given LaunchResponse object, when parsing to model, then date is parsed successfully`() {
-        val result = sut.toLaunch(LAUNCH_RESPONSE)
+        val result = sut.toLaunch(LAUNCH_RESPONSE1)
 
-        assertEquals(PARSED_DATE, result.date)
-    }
-
-    companion object {
-        private const val URL = "smallImageUrl"
-        private const val MISSION_SUCCESS = true
-        private const val NAME = "launch name"
-        private const val DATE = 1143239400L
-        private const val PARSED_DATE = "04-06-2010"
-
-        private val PATCH = Patch(small = URL)
-        private val LINKS = Links(patch = PATCH)
-
-        private val LAUNCH_RESPONSE = LaunchResponse(
-            links = LINKS,
-            success = MISSION_SUCCESS,
-            name = NAME,
-            date_unix = DATE
-        )
+        assertEquals(PARSED_DATE1, result.date)
     }
 }
