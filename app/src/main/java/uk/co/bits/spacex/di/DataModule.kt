@@ -12,6 +12,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import uk.co.bits.spacex.data.api.LaunchesApiService
 import uk.co.bits.spacex.data.mapper.LaunchMapper
 import uk.co.bits.spacex.data.repository.LaunchesRepository
+import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository
 import uk.co.bits.spacex.data.service.LaunchesService
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -42,9 +43,13 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideLaunchesApiService(retrofit: Retrofit): LaunchesApiService = retrofit.create(LaunchesApiService::class.java)
+    fun provideLaunchesApiService(retrofit: Retrofit): LaunchesApiService {
+        return retrofit.create(LaunchesApiService::class.java)
+    }
 
     @Singleton
     @Provides
-    fun providesRepository(launchesService: LaunchesService, mapper: LaunchMapper) = LaunchesRepository(launchesService, mapper)
+    fun providesRepository(launchesService: LaunchesService, mapper: LaunchMapper): LaunchesRepository {
+        return SpaceXLaunchesRepository(launchesService, mapper)
+    }
 }

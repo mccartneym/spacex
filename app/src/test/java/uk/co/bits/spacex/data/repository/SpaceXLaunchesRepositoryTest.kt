@@ -6,24 +6,23 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Response
 import uk.co.bits.spacex.LAUNCH_RESPONSE_LIST
 import uk.co.bits.spacex.data.mapper.LaunchMapper
-import uk.co.bits.spacex.data.repository.LaunchesRepository.UnableToLoadLaunchesError
+import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository.UnableToLoadLaunchesError
 import uk.co.bits.spacex.data.response.LaunchResponse
 import uk.co.bits.spacex.data.service.LaunchesService
 import uk.co.bits.spacex.data.service.LaunchesService.LaunchServiceApiError
 
 @ExperimentalCoroutinesApi
-class LaunchesRepositoryTest {
+class SpaceXLaunchesRepositoryTest {
 
     private val launchesService: LaunchesService = mockk(relaxed = true)
     private val launchesMapper: LaunchMapper = mockk(relaxed = true)
-    private lateinit var sut: LaunchesRepository
+    private lateinit var sut: SpaceXLaunchesRepository
 
     @Before
     fun setUp() {
-        sut = LaunchesRepository(launchesService, launchesMapper)
+        sut = SpaceXLaunchesRepository(launchesService, launchesMapper)
     }
 
     @Test

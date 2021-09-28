@@ -27,11 +27,9 @@ class LaunchListAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val launchItem = launchData[position]
         viewHolder.nameView.text = launchItem.name
-
         viewHolder.dateView.text = context.resources.getString(R.string.launch_date, launchItem.date)
 
         val url: String? = launchItem.smallImageUrl
-
         if (url != null) {
             Glide.with(context)
                 .load(url)

@@ -29,7 +29,6 @@ class LaunchListFragment : Fragment() {
     }
 
     private fun FragmentLaunchesBinding.observeViewModel() {
-
         viewModel.listViewState.observe(viewLifecycleOwner) { state ->
             views.children.forEach { view -> view.isVisible = false }
 

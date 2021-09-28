@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.data.api;
+package uk.co.bits.spacex.data.api
 
 import retrofit2.Response
 import retrofit2.http.GET

@@ -26,18 +26,18 @@ class LaunchListViewModel @Inject constructor(
     }
 
     private fun updateUi(result: Result<List<Launch>>) {
-        when {
+        val viewState = when {
             result.isSuccess -> {
                 val list = result.getOrDefault(emptyList())
                 if (list.isNotEmpty()) {
-                    listViewState.postValue(ListHasContent(list))
+                    ListHasContent(list)
                 } else {
-                    listViewState.postValue(ListEmpty)
+                    ListEmpty
                 }
             }
-            result.isFailure -> {
-                listViewState.postValue(ListError)
-            }
+            else -> ListError
         }
+
+        listViewState.postValue(viewState)
     }
 }

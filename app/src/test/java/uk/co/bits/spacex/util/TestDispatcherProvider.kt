@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 
 @ExperimentalCoroutinesApi
 class TestDispatcherProvider(
-    val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+    private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 ) : DispatcherProvider {
 
     override fun default(): CoroutineDispatcher {

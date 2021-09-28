@@ -11,7 +11,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import uk.co.bits.spacex.LAUNCH_LIST
-import uk.co.bits.spacex.data.repository.LaunchesRepository
+import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository
 import uk.co.bits.spacex.util.TestDispatcherProvider
 
 @ExperimentalCoroutinesApi
@@ -32,7 +32,7 @@ class LaunchListViewModelTest {
 
     @Test
     fun `when loading launches results in error, then send error view state`() = runBlockingTest {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(LaunchesRepository.UnableToLoadLaunchesError())
+        coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
 
         sut.onStart()
 
