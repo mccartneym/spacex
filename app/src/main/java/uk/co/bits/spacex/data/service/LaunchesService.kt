@@ -6,9 +6,6 @@ import javax.inject.Inject
 
 class LaunchesService @Inject constructor(private val launchesApiService: LaunchesApiService) {
 
-//    private val launchesApiService: LaunchesApiService
-//        get() = apiProvider.getEmailReceiptApiService()
-
     suspend fun getLaunches(): List<LaunchResponse>? {
         val response = launchesApiService.getLaunches()
 
@@ -17,10 +14,5 @@ class LaunchesService @Inject constructor(private val launchesApiService: Launch
         } else {
             null
         }
-//        if (response.isSuccessful) {
-//            return Result.Success(Unit)
-//        } else {
-//            return Result.Error("Failed to load launches")
-//        }
     }
 }
