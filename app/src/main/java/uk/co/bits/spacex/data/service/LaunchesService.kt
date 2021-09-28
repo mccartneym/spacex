@@ -6,13 +6,15 @@ import javax.inject.Inject
 
 class LaunchesService @Inject constructor(private val launchesApiService: LaunchesApiService) {
 
-    suspend fun getLaunches(): List<LaunchResponse>? {
+    suspend fun getLaunches(): Result<List<LaunchResponse>?> {
         val response = launchesApiService.getLaunches()
 
         return if (response.isSuccessful) {
-            response.body()
+            Result.success(response.body())
         } else {
-            null
+            Result.failure(LaunchServiceApiError())
         }
     }
+
+    class LaunchServiceApiError : Exception()
 }

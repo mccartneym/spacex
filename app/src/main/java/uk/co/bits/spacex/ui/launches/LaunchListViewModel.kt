@@ -3,7 +3,6 @@ package uk.co.bits.spacex.ui.launches
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import uk.co.bits.spacex.data.model.Launch
 import javax.inject.Inject
 
@@ -18,20 +17,24 @@ class LaunchListViewModel @Inject constructor(
     fun onStart() {
         viewModelScope.launch {
             listViewState.value = LaunchListViewState.ListLoading
-            val launchList = getLaunchesInteractor.getLaunches()
-            Timber.e("*** no. of launches: ${launchList.size}")
-            Timber.e("*** launches: $launchList")
-
-            updateUi(launchList)
+            val launchListResult = getLaunchesInteractor.getLaunches()
+            updateUi(launchListResult)
         }
     }
 
-    fun updateUi(launchList: List<Launch>) {
-        if (launchList.isNotEmpty()) {
-            listViewState.value = LaunchListViewState.ListHasContent(launchList)
-        } else {
-            // TODO
-            listViewState.value = LaunchListViewState.ListEmpty
+    private fun updateUi(result: Result<List<Launch>>) {
+        when {
+            result.isSuccess -> {
+                val list = result.getOrDefault(emptyList())
+                if (list.isNotEmpty()) {
+                    listViewState.value = LaunchListViewState.ListHasContent(list)
+                } else {
+                    listViewState.value = LaunchListViewState.ListEmpty
+                }
+            }
+            result.isFailure -> {
+                listViewState.value = LaunchListViewState.ListError
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetLaunchesInteractor @Inject constructor(private val launchesRepository: LaunchesRepository) {
 
-    suspend fun getLaunches(): List<Launch> {
+    suspend fun getLaunches(): Result<List<Launch>> {
         return launchesRepository.getLaunches()
     }
 }

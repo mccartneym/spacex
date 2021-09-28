@@ -1,15 +1,18 @@
 package uk.co.bits.spacex.data.repository
 
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 import uk.co.bits.spacex.LAUNCH_RESPONSE_LIST
 import uk.co.bits.spacex.data.mapper.LaunchMapper
+import uk.co.bits.spacex.data.repository.LaunchesRepository.UnableToLoadLaunchesError
+import uk.co.bits.spacex.data.response.LaunchResponse
 import uk.co.bits.spacex.data.service.LaunchesService
+import uk.co.bits.spacex.data.service.LaunchesService.LaunchServiceApiError
 
 @ExperimentalCoroutinesApi
 class LaunchesRepositoryTest {
@@ -25,9 +28,22 @@ class LaunchesRepositoryTest {
 
     @Test
     fun `when launch data is loaded for the first time, then launch service loads launches`() = runBlockingTest {
+        coEvery { launchesService.getLaunches() } returns Result.success(LAUNCH_RESPONSE_LIST)
+
         sut.getLaunches()
 
         coVerify(exactly = 1) { launchesService.getLaunches() }
+    }
+
+    @Test
+    fun `when launch data fails to load first time, then error result is returned`() = runBlockingTest {
+        val response = Result.failure<List<LaunchResponse>>(LaunchServiceApiError())
+        coEvery { launchesService.getLaunches() } returns response
+
+        val result = sut.getLaunches()
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is UnableToLoadLaunchesError)
     }
 
     @Test
@@ -61,17 +77,17 @@ class LaunchesRepositoryTest {
         }
 
     private suspend fun givenLaunchDataLoadsSuccessfully() {
-        coEvery { launchesService.getLaunches() } returns LAUNCH_RESPONSE_LIST
+        coEvery { launchesService.getLaunches() } returns Result.success(LAUNCH_RESPONSE_LIST)
         sut.getLaunches()
     }
 
     private suspend fun givenLaunchDataReturnsNullResponse() {
-        coEvery { launchesService.getLaunches() } returns null
+        coEvery { launchesService.getLaunches() } returns Result.success(null)
         sut.getLaunches()
     }
 
     private suspend fun givenLaunchDataReturnsEmptyResponse() {
-        coEvery { launchesService.getLaunches() } returns emptyList()
+        coEvery { launchesService.getLaunches() } returns Result.success(emptyList())
         sut.getLaunches()
     }
 }
