@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class DateMapper @Inject constructor() {
 
-    private val sdf = SimpleDateFormat("dd-mm-yyyy", Locale.UK)
+    private val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.UK)
 
     fun parseUnixDate(unixDate: Long): String {
         return sdf.format(unixDate * 1000)
