@@ -12,12 +12,11 @@ import javax.inject.Inject
 class LaunchListViewModel @Inject constructor(
     private val getLaunchesInteractor: GetLaunchesInteractor,
     private val dispatcherProvider: DispatcherProvider
-) : ViewModel(), LifecycleObserver {
+) : ViewModel(), DefaultLifecycleObserver {
 
     val listViewState = MutableLiveData<LaunchListViewState>()
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
+    override fun onStart(owner: LifecycleOwner) {
         viewModelScope.launch(dispatcherProvider.default()) {
             listViewState.postValue(ListLoading)
             val launchListResult = getLaunchesInteractor.getLaunches()

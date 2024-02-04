@@ -37,7 +37,7 @@ class LaunchListViewModelTest {
     fun `when loading launches results in error, then send error view state`() = runTest(provider.main()) {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
 
-        sut.onStart()
+        sut.onStart(mockk())
         advanceUntilIdle()
 
         verifySequence {
@@ -50,7 +50,7 @@ class LaunchListViewModelTest {
     fun `when loading launches results in empty list, then send empty view state`() = runTest(provider.main()) {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(emptyList())
 
-        sut.onStart()
+        sut.onStart(mockk())
         advanceUntilIdle()
 
         verifySequence {
@@ -63,7 +63,7 @@ class LaunchListViewModelTest {
     fun `when loading results in list with content, then send has content view state`() = runTest(provider.main()) {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(LAUNCH_LIST)
 
-        sut.onStart()
+        sut.onStart(mockk())
         advanceUntilIdle()
 
         verifySequence {
