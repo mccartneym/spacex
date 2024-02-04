@@ -6,12 +6,14 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verifySequence
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import uk.co.bits.spacex.LAUNCH_LIST
 import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository
+import uk.co.bits.spacex.util.DispatcherProvider
 import uk.co.bits.spacex.util.TestDispatcherProvider
 
 @ExperimentalCoroutinesApi
@@ -22,19 +24,21 @@ class LaunchListViewModelTest {
 
     private val listViewStateObserver: Observer<LaunchListViewState> = mockk(relaxed = true)
     private val getLaunchesInteractor: GetLaunchesInteractor = mockk()
+    private val provider: DispatcherProvider = TestDispatcherProvider()
     private lateinit var sut: LaunchListViewModel
 
     @Before
     fun setUp() {
-        sut = LaunchListViewModel(getLaunchesInteractor, TestDispatcherProvider())
+        sut = LaunchListViewModel(getLaunchesInteractor, provider)
         sut.listViewState.observeForever(listViewStateObserver)
     }
 
     @Test
-    fun `when loading launches results in error, then send error view state`() = runTest {
+    fun `when loading launches results in error, then send error view state`() = runTest(provider.main()) {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
 
         sut.onStart()
+        advanceUntilIdle()
 
         verifySequence {
             listViewStateObserver.onChanged(LaunchListViewState.ListLoading)
@@ -43,10 +47,11 @@ class LaunchListViewModelTest {
     }
 
     @Test
-    fun `when loading launches results in empty list, then send empty view state`() = runTest {
+    fun `when loading launches results in empty list, then send empty view state`() = runTest(provider.main()) {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(emptyList())
 
         sut.onStart()
+        advanceUntilIdle()
 
         verifySequence {
             listViewStateObserver.onChanged(LaunchListViewState.ListLoading)
@@ -55,10 +60,11 @@ class LaunchListViewModelTest {
     }
 
     @Test
-    fun `when loading launches results in list with content, then send has content view state`() = runTest {
+    fun `when loading results in list with content, then send has content view state`() = runTest(provider.main()) {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(LAUNCH_LIST)
 
         sut.onStart()
+        advanceUntilIdle()
 
         verifySequence {
             listViewStateObserver.onChanged(LaunchListViewState.ListLoading)
