@@ -6,7 +6,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verifySequence
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +31,7 @@ class LaunchListViewModelTest {
     }
 
     @Test
-    fun `when loading launches results in error, then send error view state`() = runBlockingTest {
+    fun `when loading launches results in error, then send error view state`() = runTest {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
 
         sut.onStart()
@@ -43,7 +43,7 @@ class LaunchListViewModelTest {
     }
 
     @Test
-    fun `when loading launches results in empty list, then send empty view state`() = runBlockingTest {
+    fun `when loading launches results in empty list, then send empty view state`() = runTest {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(emptyList())
 
         sut.onStart()
@@ -55,7 +55,7 @@ class LaunchListViewModelTest {
     }
 
     @Test
-    fun `when loading launches results in list with content, then send has content view state`() = runBlockingTest {
+    fun `when loading launches results in list with content, then send has content view state`() = runTest {
         coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(LAUNCH_LIST)
 
         sut.onStart()
