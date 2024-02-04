@@ -14,11 +14,13 @@ import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListError
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListHasContent
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListLoading
+import uk.co.bits.spacex.util.SchedulerProvider
 import javax.inject.Inject
 
 @HiltViewModel
 class LaunchListViewModel @Inject constructor(
-    private val getLaunchesInteractor: GetLaunchesInteractor
+    private val getLaunchesInteractor: GetLaunchesInteractor,
+    private val schedulers: SchedulerProvider,
 ) : ViewModel(), DefaultLifecycleObserver {
 
     val listViewState = MutableLiveData<LaunchListViewState>()
@@ -28,8 +30,8 @@ class LaunchListViewModel @Inject constructor(
     override fun onStart(owner: LifecycleOwner) {
         val disposable = getLaunchesInteractor
             .getLaunches()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.main())
             .doOnSubscribe { listViewState.postValue(ListLoading) }
             .subscribe(::updateUi, Timber::e)
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verifySequence
+import io.reactivex.Observable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -15,6 +16,7 @@ import uk.co.bits.spacex.LAUNCH_LIST
 import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository
 import uk.co.bits.spacex.util.DispatcherProvider
 import uk.co.bits.spacex.util.TestDispatcherProvider
+import uk.co.bits.spacex.util.TestSchedulerProvider
 
 @ExperimentalCoroutinesApi
 class LaunchListViewModelTest {
@@ -29,13 +31,13 @@ class LaunchListViewModelTest {
 
     @Before
     fun setUp() {
-        sut = LaunchListViewModel(getLaunchesInteractor)
+        sut = LaunchListViewModel(getLaunchesInteractor, TestSchedulerProvider())
         sut.listViewState.observeForever(listViewStateObserver)
     }
 
     @Test
     fun `when loading launches results in error, then send error view state`() = runTest(provider.main()) {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
+        coEvery { getLaunchesInteractor.getLaunches() } returns Observable.just(Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError()))
 
         sut.onStart(mockk())
         advanceUntilIdle()
@@ -48,7 +50,7 @@ class LaunchListViewModelTest {
 
     @Test
     fun `when loading launches results in empty list, then send empty view state`() = runTest(provider.main()) {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(emptyList())
+        coEvery { getLaunchesInteractor.getLaunches() } returns Observable.just(Result.success(emptyList()))
 
         sut.onStart(mockk())
         advanceUntilIdle()
@@ -61,7 +63,7 @@ class LaunchListViewModelTest {
 
     @Test
     fun `when loading results in list with content, then send has content view state`() = runTest(provider.main()) {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(LAUNCH_LIST)
+        coEvery { getLaunchesInteractor.getLaunches() } returns Observable.just(Result.success(LAUNCH_LIST))
 
         sut.onStart(mockk())
         advanceUntilIdle()
