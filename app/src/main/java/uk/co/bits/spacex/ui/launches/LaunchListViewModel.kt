@@ -6,6 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uk.co.bits.spacex.data.model.Launch
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
@@ -21,7 +25,9 @@ class LaunchListViewModel @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : ViewModel(), DefaultLifecycleObserver {
 
-    val listViewState = MutableLiveData<LaunchListViewState>()
+    private val state = MutableStateFlow(ListEmpty)
+    val listViewState = state.asStateFlow()
+
 
     override fun onStart(owner: LifecycleOwner) {
         viewModelScope.launch(dispatcherProvider.default()) {
