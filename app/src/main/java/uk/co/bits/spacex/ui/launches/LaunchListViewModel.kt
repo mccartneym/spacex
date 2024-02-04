@@ -31,7 +31,7 @@ class LaunchListViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { listViewState.postValue(ListLoading) }
-            .subscribe({ list -> updateUi(Result.success(list)) }, Timber::e)
+            .subscribe(::updateUi, Timber::e)
 
         disposables.add(disposable)
     }

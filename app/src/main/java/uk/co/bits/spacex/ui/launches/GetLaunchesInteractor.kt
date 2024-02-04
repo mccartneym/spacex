@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class GetLaunchesInteractor @Inject constructor(private val launchesRepository: LaunchesRepository) {
 
-    fun getLaunches(): Observable<List<Launch>> = launchesRepository.getLaunches()
+    fun getLaunches(): Observable<Result<List<Launch>>> = launchesRepository.getLaunches()
 }

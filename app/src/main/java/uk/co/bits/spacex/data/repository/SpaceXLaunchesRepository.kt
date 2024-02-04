@@ -13,17 +13,14 @@ class SpaceXLaunchesRepository @Inject constructor(
 
     private val launchList: MutableList<Launch> = mutableListOf()
 
-    override fun getLaunches(): Observable<List<Launch>> {
-        return loadLaunches().defaultIfEmpty(launchList)
+    override fun getLaunches(): Observable<Result<List<Launch>>> {
+        return loadLaunches().defaultIfEmpty(Result.success(launchList))
     }
 
-    private fun loadLaunches(): Observable<List<Launch>> {
+    private fun loadLaunches(): Observable<Result<List<Launch>>> {
         return launchesService
             .getLaunches()
-            .map {
-                it.forEach { response -> launchList.add(mapper.toLaunch(response)) }
-                launchList
-            }
+            .map(mapper::toLaunchList)
     }
 
     class UnableToLoadLaunchesError : Exception()
