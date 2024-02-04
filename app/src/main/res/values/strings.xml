@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SpaceX</string>
+    <string name="launches_title">Falcon 9 Launches</string>
+    <string name="empty_list">Empty dataset</string>
+    <string name="error">Error retrieving data</string>
+
+    <string name="launch_date">Launch Date: %s</string>
+    <string name="mission_success">Mission Success</string>
+</resources>
