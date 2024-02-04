@@ -29,7 +29,7 @@ class LaunchListViewModelTest {
 
     @Before
     fun setUp() {
-        sut = LaunchListViewModel(getLaunchesInteractor, provider)
+        sut = LaunchListViewModel(getLaunchesInteractor)
         sut.listViewState.observeForever(listViewStateObserver)
     }
 

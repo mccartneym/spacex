@@ -1,5 +1,6 @@
 package uk.co.bits.spacex.data.repository
 
+import io.reactivex.Observable
 import uk.co.bits.spacex.data.mapper.LaunchMapper
 import uk.co.bits.spacex.data.model.Launch
 import uk.co.bits.spacex.data.service.LaunchesService
@@ -12,26 +13,17 @@ class SpaceXLaunchesRepository @Inject constructor(
 
     private val launchList: MutableList<Launch> = mutableListOf()
 
-    override suspend fun getLaunches(): Result<List<Launch>> {
-        val result = if (launchList.isEmpty()) {
-            loadLaunches()
-        } else {
-            Result.success(launchList)
-        }
-
-        return result
+    override fun getLaunches(): Observable<List<Launch>> {
+        return loadLaunches().defaultIfEmpty(launchList)
     }
 
-    private suspend fun loadLaunches(): Result<List<Launch>> {
-        return launchesService.getLaunches().fold(
-            onSuccess = {
-                it?.forEach { response -> launchList.add(mapper.toLaunch(response)) }
-                Result.success(launchList)
-            },
-            onFailure = {
-                Result.failure(UnableToLoadLaunchesError())
+    private fun loadLaunches(): Observable<List<Launch>> {
+        return launchesService
+            .getLaunches()
+            .map {
+                it.forEach { response -> launchList.add(mapper.toLaunch(response)) }
+                launchList
             }
-        )
     }
 
     class UnableToLoadLaunchesError : Exception()

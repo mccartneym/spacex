@@ -4,31 +4,41 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import uk.co.bits.spacex.data.model.Launch
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListError
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListHasContent
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListLoading
-import uk.co.bits.spacex.util.DispatcherProvider
 import javax.inject.Inject
 
 @HiltViewModel
 class LaunchListViewModel @Inject constructor(
-    private val getLaunchesInteractor: GetLaunchesInteractor,
-    private val dispatcherProvider: DispatcherProvider
+    private val getLaunchesInteractor: GetLaunchesInteractor
 ) : ViewModel(), DefaultLifecycleObserver {
 
     val listViewState = MutableLiveData<LaunchListViewState>()
 
+    private val disposables: CompositeDisposable = CompositeDisposable()
+
     override fun onStart(owner: LifecycleOwner) {
-        viewModelScope.launch(dispatcherProvider.default()) {
-            listViewState.postValue(ListLoading)
-            val launchListResult = getLaunchesInteractor.getLaunches()
-            updateUi(launchListResult)
-        }
+        val disposable = getLaunchesInteractor
+            .getLaunches()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { listViewState.postValue(ListLoading) }
+            .subscribe({ list -> updateUi(Result.success(list)) }, Timber::e)
+
+        disposables.add(disposable)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        disposables.clear()
     }
 
     private fun updateUi(result: Result<List<Launch>>) {
