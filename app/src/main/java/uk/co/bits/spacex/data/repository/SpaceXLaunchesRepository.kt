@@ -23,16 +23,15 @@ class SpaceXLaunchesRepository @Inject constructor(
     }
 
     private suspend fun loadLaunches(): Result<List<Launch>> {
-        val launchesResponse = launchesService.getLaunches()
-
-        return if (launchesResponse.isSuccess) {
-            launchesResponse.getOrDefault(emptyList())?.forEach { response ->
-                launchList.add(mapper.toLaunch(response))
+        return launchesService.getLaunches().fold(
+            onSuccess = {
+                it?.forEach { response -> launchList.add(mapper.toLaunch(response)) }
+                Result.success(launchList)
+            },
+            onFailure = {
+                Result.failure(UnableToLoadLaunchesError())
             }
-            Result.success(launchList)
-        } else {
-            Result.failure(UnableToLoadLaunchesError())
-        }
+        )
     }
 
     class UnableToLoadLaunchesError : Exception()

@@ -40,6 +40,7 @@
             android:layout_gravity="center"
             android:text="@string/empty_list"
             android:textAppearance="?attr/textAppearanceHeadline5" />
+<!--            android:textAppearance="?attr/textAppearanceTitleLarge" />-->
 
         <TextView
             android:id="@+id/error"
@@ -48,6 +49,7 @@
             android:layout_gravity="center"
             android:text="@string/error"
             android:textAppearance="?attr/textAppearanceHeadline5" />
+<!--            android:textAppearance="?attr/textAppearanceTitleLarge" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/launch_list"

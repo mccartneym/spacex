@@ -20,7 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
-
     private const val BASE_URL = "https://api.spacexdata.com/v4/"
     private const val READ_TIMEOUT: Long = 30000 // 30 seconds
 
@@ -49,7 +48,10 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun providesRepository(launchesService: LaunchesService, mapper: LaunchMapper): LaunchesRepository {
+    fun providesRepository(
+        launchesService: LaunchesService,
+        mapper: LaunchMapper,
+    ): LaunchesRepository {
         return SpaceXLaunchesRepository(launchesService, mapper)
     }
 }

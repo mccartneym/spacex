@@ -5,7 +5,7 @@ import io.mockk.every
 import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -28,7 +28,7 @@ class LaunchesServiceTest {
     }
 
     @Test
-    fun `given api request is unsuccessful, when getting launch data, then return failure, LaunchServiceApiError`() = runBlockingTest {
+    fun `given api request is unsuccessful, when getting launch data, then return failure`() = runTest {
         every { response.isSuccessful } returns false
         coEvery { launchesApiService.getLaunches() } returns response
 
@@ -39,7 +39,7 @@ class LaunchesServiceTest {
     }
 
     @Test
-    fun `given api request is successful, when getting launch data, then return result with list of launch data`() = runBlockingTest {
+    fun `given api request is successful, when getting launch data, then return list of launch data`() = runTest {
         every { response.isSuccessful } returns true
         every { response.body() } returns LAUNCH_RESPONSE_LIST
         coEvery { launchesApiService.getLaunches() } returns response

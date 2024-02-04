@@ -8,5 +8,5 @@ interface DispatcherProvider {
 
     fun io(): CoroutineDispatcher
 
-    fun main() : CoroutineDispatcher
+    fun main(): CoroutineDispatcher
 }
