@@ -1,10 +1,17 @@
 package uk.co.bits.spacex.ui.launches
 
-import androidx.lifecycle.*
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import uk.co.bits.spacex.data.model.Launch
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.*
+import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
+import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListError
+import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListHasContent
+import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListLoading
 import uk.co.bits.spacex.util.DispatcherProvider
 import javax.inject.Inject
 
@@ -25,18 +32,16 @@ class LaunchListViewModel @Inject constructor(
     }
 
     private fun updateUi(result: Result<List<Launch>>) {
-        val viewState = when {
-            result.isSuccess -> {
-                val list = result.getOrDefault(emptyList())
+        val viewState = result.fold(
+            onSuccess = { list ->
                 if (list.isNotEmpty()) {
                     ListHasContent(list)
                 } else {
                     ListEmpty
                 }
-            }
-            else -> ListError
-        }
-
+            },
+            onFailure = { ListError },
+        )
         listViewState.postValue(viewState)
     }
 }

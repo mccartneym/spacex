@@ -8,7 +8,6 @@ class LaunchesService @Inject constructor(private val launchesApiService: Launch
 
     suspend fun getLaunches(): Result<List<LaunchResponse>?> {
         val response = launchesApiService.getLaunches()
-
         return if (response.isSuccessful) {
             Result.success(response.body())
         } else {
