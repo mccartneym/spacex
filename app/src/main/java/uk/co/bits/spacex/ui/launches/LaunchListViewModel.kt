@@ -2,13 +2,10 @@ package uk.co.bits.spacex.ui.launches
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uk.co.bits.spacex.data.model.Launch
@@ -25,19 +22,19 @@ class LaunchListViewModel @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : ViewModel(), DefaultLifecycleObserver {
 
-    private val state = MutableStateFlow(ListEmpty)
+    private val state = MutableStateFlow<LaunchListViewState>(ListEmpty)
     val listViewState = state.asStateFlow()
 
 
     override fun onStart(owner: LifecycleOwner) {
         viewModelScope.launch(dispatcherProvider.default()) {
-            listViewState.postValue(ListLoading)
+            state.emit(ListLoading)
             val launchListResult = getLaunchesInteractor.getLaunches()
             updateUi(launchListResult)
         }
     }
 
-    private fun updateUi(result: Result<List<Launch>>) {
+    private suspend fun updateUi(result: Result<List<Launch>>) {
         val viewState = result.fold(
             onSuccess = { list ->
                 if (list.isNotEmpty()) {
@@ -48,6 +45,6 @@ class LaunchListViewModel @Inject constructor(
             },
             onFailure = { ListError },
         )
-        listViewState.postValue(viewState)
+        state.emit(viewState)
     }
 }

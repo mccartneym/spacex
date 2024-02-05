@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
-import androidx.core.view.isVisible
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import uk.co.bits.spacex.databinding.FragmentLaunchesBinding
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.*
+import timber.log.Timber
+import uk.co.bits.spacex.ui.theme.SpaceXTheme
 
 @AndroidEntryPoint
 class LaunchListFragment : Fragment() {
@@ -23,28 +26,20 @@ class LaunchListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = FragmentLaunchesBinding.inflate(inflater)
-        binding.observeViewModel()
-        return binding.root
-    }
-
-    private fun FragmentLaunchesBinding.observeViewModel() {
-        viewModel.listViewState.observe(viewLifecycleOwner) { state ->
-            views.children.forEach { view -> view.isVisible = false }
-
-            when (state) {
-                ListLoading -> launchProgressbar.isVisible = true
-                ListEmpty -> emptyList.isVisible = true
-                ListError -> error.isVisible = true
-                is ListHasContent -> {
-                    launchList.isVisible = true
-                    launchList.adapter = LaunchListAdapter(requireContext(), state.launchList)
+        Timber.e("*** onCreateView")
+        return ComposeView(requireContext()).apply {
+            setContent {
+                Timber.e("*** onCreateView, setContent")
+                SpaceXTheme {
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        LaunchListScreen()
+                    }
                 }
             }
         }
-    }
-
-    companion object {
-        fun newInstance(): LaunchListFragment = LaunchListFragment()
     }
 }

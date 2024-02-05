@@ -10,25 +10,29 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import timber.log.Timber
 import uk.co.bits.spacex.data.model.Launch
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListError
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListHasContent
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListLoading
 import uk.co.bits.spacex.ui.theme.SpaceXTheme
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 
 @Composable
-fun LaunchListScreen() {
-    val viewModel: LaunchListViewModel = viewModel()
-
+fun LaunchListScreen(viewModel: LaunchListViewModel = hiltViewModel()) {
     val state: LaunchListViewState by viewModel.listViewState.collectAsState()
+    LaunchList(state)
+}
 
+@Composable
+fun LaunchList(state: LaunchListViewState) {
+    Timber.e("*** state: $state")
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,26 +45,34 @@ fun LaunchListScreen() {
 
         when (state) {
             ListLoading -> {
-                CircularProgressIndicator(modifier = Modifier
-                    .padding(16.dp)
-                    .size(50.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(50.dp)
+                )
             }
+
             ListEmpty -> {
                 Text(
                     text = "Empty List",
                     style = MaterialTheme.typography.headlineLarge
                 )
             }
+
             ListError -> {
                 Text(
                     text = "Error",
                     style = MaterialTheme.typography.headlineSmall
                 )
             }
+
             is ListHasContent -> {
+                val list = (state as ListHasContent).launchList
                 LazyColumn {
-                    items(state.launchList) { launch ->
-                        LaunchListItem(launch = launch)
+                    items(list.size) {
+                        list.forEach {
+                            LaunchListItem(it)
+                        }
                     }
                 }
             }
@@ -89,8 +101,53 @@ fun LaunchListItem(launch: Launch) {
 
 @Preview(showBackground = true)
 @Composable
-fun LaunchListScreenPreview() {
+fun ListHasContentPreview() {
     SpaceXTheme {
-        LaunchListScreen()
+        LaunchList(ListHasContent(
+            listOf(
+                Launch(
+                    smallImageUrl = null,
+                    success = true,
+                    name = "Name1",
+                    date = "Date1"
+                ),
+                Launch(
+                    smallImageUrl = null,
+                    success = true,
+                    name = "Name2",
+                    date = "Date2"
+                ),
+                Launch(
+                    smallImageUrl = null,
+                    success = true,
+                    name = "Name3",
+                    date = "Date3"
+                ),
+            )
+        ))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ListLoadingPreview() {
+    SpaceXTheme {
+        LaunchList(ListLoading)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ListEmptyPreview() {
+    SpaceXTheme {
+        LaunchList(ListEmpty)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ListErrorPreview() {
+    SpaceXTheme {
+        LaunchList(ListError)
     }
 }
