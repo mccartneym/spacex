@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
@@ -15,8 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -42,7 +41,6 @@ fun LaunchListScreen(viewModel: LaunchListViewModel = hiltViewModel()) {
 
 @Composable
 fun LaunchList(state: LaunchListViewState) {
-    Timber.e("*** state: $state")
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +48,10 @@ fun LaunchList(state: LaunchListViewState) {
     ) {
         Text(
             text = stringResource(R.string.launches_title),
-            style = typography.headlineLarge
+            style = typography.headlineLarge,
+            modifier = Modifier
+                .align(alignment = Alignment.CenterHorizontally)
+                .padding(8.dp)
         )
 
         when (state) {
@@ -59,6 +60,7 @@ fun LaunchList(state: LaunchListViewState) {
                     modifier = Modifier
                         .padding(16.dp)
                         .size(50.dp)
+                        .align(alignment = Alignment.CenterHorizontally)
                 )
             }
 
@@ -98,9 +100,8 @@ fun LaunchListItem(launch: Launch) {
                 .data(launch.smallImageUrl)
                 .crossfade(true)
                 .build(),
-            contentDescription = null, // stringResource(R.string.description),
+            contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape)
         )
 
         Column(
@@ -110,11 +111,11 @@ fun LaunchListItem(launch: Launch) {
         ) {
             Text(
                 text = launch.name,
-                style = typography.headlineLarge
+                style = typography.bodyMedium
             )
             Text(
                 text = launch.date,
-                style = typography.bodyMedium,
+                style = typography.bodySmall,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
