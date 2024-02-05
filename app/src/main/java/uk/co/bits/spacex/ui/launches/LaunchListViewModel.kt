@@ -1,7 +1,6 @@
 package uk.co.bits.spacex.ui.launches
 
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,14 +18,14 @@ import javax.inject.Inject
 @HiltViewModel
 class LaunchListViewModel @Inject constructor(
     private val getLaunchesInteractor: GetLaunchesInteractor,
-    private val dispatcherProvider: DispatcherProvider
+    dispatcherProvider: DispatcherProvider
 ) : ViewModel(), DefaultLifecycleObserver {
 
-    private val state = MutableStateFlow<LaunchListViewState>(ListEmpty)
+    private val state = MutableStateFlow<LaunchListViewState>(ListLoading)
     val listViewState = state.asStateFlow()
 
 
-    override fun onStart(owner: LifecycleOwner) {
+    init {
         viewModelScope.launch(dispatcherProvider.default()) {
             state.emit(ListLoading)
             val launchListResult = getLaunchesInteractor.getLaunches()
