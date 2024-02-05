@@ -66,6 +66,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.material:material:1.4.0") // upgrade may lose MaterialCardView in view_launch_details
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Compose
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
