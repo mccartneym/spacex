@@ -16,9 +16,9 @@ val LINKS1 = Links(patch = PATCH1)
 
 val LAUNCH_RESPONSE1 = LaunchResponse(
     links = LINKS1,
-    success = MISSION_SUCCESS1,
+    wasSuccessful = MISSION_SUCCESS1,
     name = NAME1,
-    date_unix = DATE1
+    dateUnix = DATE1
 )
 
 const val URL2 = "smallImageUrl2"
@@ -32,9 +32,9 @@ val LINKS2 = Links(patch = PATCH2)
 
 val LAUNCH_RESPONSE2 = LaunchResponse(
     links = LINKS2,
-    success = MISSION_SUCCESS2,
+    wasSuccessful = MISSION_SUCCESS2,
     name = NAME2,
-    date_unix = DATE2
+    dateUnix = DATE2
 )
 
 const val URL3 = "smallImageUrl3"
@@ -48,9 +48,9 @@ val LINKS3 = Links(patch = PATCH3)
 
 val LAUNCH_RESPONSE3 = LaunchResponse(
     links = LINKS3,
-    success = MISSION_SUCCESS3,
+    wasSuccessful = MISSION_SUCCESS3,
     name = NAME3,
-    date_unix = DATE3
+    dateUnix = DATE3
 )
 
 val LAUNCH1 = Launch(URL1, MISSION_SUCCESS1, NAME1, PARSED_DATE1)

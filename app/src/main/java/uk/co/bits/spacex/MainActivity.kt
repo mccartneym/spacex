@@ -2,7 +2,6 @@ package uk.co.bits.spacex
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import uk.co.bits.spacex.ui.launches.LaunchListFragment
 
