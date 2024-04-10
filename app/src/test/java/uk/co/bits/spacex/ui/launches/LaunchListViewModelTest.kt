@@ -13,6 +13,9 @@ import org.junit.Rule
 import org.junit.Test
 import uk.co.bits.spacex.LAUNCH_LIST
 import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository
+import uk.co.bits.spacex.domain.usecase.GetLaunchesUseCase
+import uk.co.bits.spacex.ui.LaunchListViewModel
+import uk.co.bits.spacex.ui.LaunchListViewState
 import uk.co.bits.spacex.util.DispatcherProvider
 import uk.co.bits.spacex.util.TestDispatcherProvider
 
@@ -23,19 +26,19 @@ class LaunchListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val listViewStateObserver: Observer<LaunchListViewState> = mockk(relaxed = true)
-    private val getLaunchesInteractor: GetLaunchesInteractor = mockk()
+    private val getLaunchesUseCase: GetLaunchesUseCase = mockk()
     private val provider: DispatcherProvider = TestDispatcherProvider()
     private lateinit var sut: LaunchListViewModel
 
     @Before
     fun setUp() {
-        sut = LaunchListViewModel(getLaunchesInteractor, provider)
+        sut = LaunchListViewModel(getLaunchesUseCase, provider)
         sut.listViewState.observeForever(listViewStateObserver)
     }
 
     @Test
     fun `when loading launches results in error, then send error view state`() = runTest(provider.main()) {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
+        coEvery { getLaunchesUseCase() } returns Result.failure(SpaceXLaunchesRepository.UnableToLoadLaunchesError())
 
         sut.onStart(mockk())
         advanceUntilIdle()
@@ -48,7 +51,7 @@ class LaunchListViewModelTest {
 
     @Test
     fun `when loading launches results in empty list, then send empty view state`() = runTest(provider.main()) {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(emptyList())
+        coEvery { getLaunchesUseCase() } returns Result.success(emptyList())
 
         sut.onStart(mockk())
         advanceUntilIdle()
@@ -61,7 +64,7 @@ class LaunchListViewModelTest {
 
     @Test
     fun `when loading results in list with content, then send has content view state`() = runTest(provider.main()) {
-        coEvery { getLaunchesInteractor.getLaunches() } returns Result.success(LAUNCH_LIST)
+        coEvery { getLaunchesUseCase() } returns Result.success(LAUNCH_LIST)
 
         sut.onStart(mockk())
         advanceUntilIdle()

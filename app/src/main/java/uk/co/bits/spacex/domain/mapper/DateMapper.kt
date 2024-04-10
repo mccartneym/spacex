@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.data.mapper
+package uk.co.bits.spacex.domain.mapper
 
 import java.text.SimpleDateFormat
 import java.util.Locale

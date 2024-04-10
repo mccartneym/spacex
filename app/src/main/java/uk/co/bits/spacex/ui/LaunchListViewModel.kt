@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.ui.launches
+package uk.co.bits.spacex.ui
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ViewModel
@@ -7,17 +7,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import uk.co.bits.spacex.data.model.Launch
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListError
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListHasContent
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListLoading
+import uk.co.bits.spacex.domain.model.Launch
+import uk.co.bits.spacex.domain.usecase.GetLaunchesUseCase
+import uk.co.bits.spacex.ui.LaunchListViewState.ListEmpty
+import uk.co.bits.spacex.ui.LaunchListViewState.ListError
+import uk.co.bits.spacex.ui.LaunchListViewState.ListHasContent
+import uk.co.bits.spacex.ui.LaunchListViewState.ListLoading
 import uk.co.bits.spacex.util.DispatcherProvider
 import javax.inject.Inject
 
 @HiltViewModel
 class LaunchListViewModel @Inject constructor(
-    private val getLaunchesInteractor: GetLaunchesInteractor,
+    private val getLaunches: GetLaunchesUseCase,
     dispatcherProvider: DispatcherProvider
 ) : ViewModel(), DefaultLifecycleObserver {
 
@@ -28,7 +29,7 @@ class LaunchListViewModel @Inject constructor(
     init {
         viewModelScope.launch(dispatcherProvider.default()) {
             state.emit(ListLoading)
-            val launchListResult = getLaunchesInteractor.getLaunches()
+            val launchListResult = getLaunches()
             updateUi(launchListResult)
         }
     }

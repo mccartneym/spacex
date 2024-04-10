@@ -4,6 +4,6 @@
 
     <fragment
         android:id="@+id/launchListFragment"
-        android:name="uk.co.bits.spacex.ui.launches.LaunchListFragment"/>
+        android:name="uk.co.bits.spacex.ui.LaunchListFragment"/>
 
 </navigation>

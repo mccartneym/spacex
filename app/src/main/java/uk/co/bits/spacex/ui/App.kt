@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.app
+package uk.co.bits.spacex.ui
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
-import uk.co.bits.spacex.ui.launches.LaunchListFragment
+import uk.co.bits.spacex.ui.LaunchListFragment
 
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.ui.launches
+package uk.co.bits.spacex.ui
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import uk.co.bits.spacex.R
-import uk.co.bits.spacex.data.model.Launch
+import uk.co.bits.spacex.domain.model.Launch
 
 
 class LaunchListAdapter(

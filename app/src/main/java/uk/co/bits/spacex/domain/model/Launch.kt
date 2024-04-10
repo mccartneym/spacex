@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.data.model
+package uk.co.bits.spacex.domain.model
 
 data class Launch(
     val smallImageUrl: String?,

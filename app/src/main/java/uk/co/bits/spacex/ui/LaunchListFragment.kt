@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.ui.launches
+package uk.co.bits.spacex.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -3,6 +3,7 @@ package uk.co.bits.spacex.data.mapper
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import uk.co.bits.spacex.domain.mapper.DateMapper
 
 class DateMapperTest {
 

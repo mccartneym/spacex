@@ -1,12 +1,18 @@
 package uk.co.bits.spacex.data.response
 
-data class LaunchResponse constructor(
+import com.squareup.moshi.Json
+
+data class LaunchResponse(
+    @Json(name = "links")
     val links: Links,
+    @Json(name = "success")
     val success: Boolean?,
+    @Json(name = "name")
     val name: String,
-    val date_unix: Long
+    @Json(name = "date_unix")
+    val dateUnix: Long
 )
 
-data class Links constructor(val patch: Patch)
+data class Links(val patch: Patch)
 
-data class Patch constructor(val small: String?)
+data class Patch(val small: String?)

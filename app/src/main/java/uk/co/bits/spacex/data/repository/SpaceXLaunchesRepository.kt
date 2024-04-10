@@ -1,8 +1,9 @@
 package uk.co.bits.spacex.data.repository
 
-import uk.co.bits.spacex.data.mapper.LaunchMapper
-import uk.co.bits.spacex.data.model.Launch
-import uk.co.bits.spacex.data.service.LaunchesService
+import uk.co.bits.spacex.domain.mapper.LaunchMapper
+import uk.co.bits.spacex.domain.model.Launch
+import uk.co.bits.spacex.data.api.LaunchesService
+import uk.co.bits.spacex.domain.repository.LaunchesRepository
 import javax.inject.Inject
 
 class SpaceXLaunchesRepository @Inject constructor(

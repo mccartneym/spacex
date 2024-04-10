@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import uk.co.bits.spacex.ui.launches.LaunchListScreen
+import uk.co.bits.spacex.ui.LaunchListScreen
 
 @Composable
 internal fun LaunchesNavHost() {

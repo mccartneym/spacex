@@ -12,8 +12,9 @@ import org.junit.Test
 import retrofit2.Response
 import uk.co.bits.spacex.LAUNCH_RESPONSE_LIST
 import uk.co.bits.spacex.data.api.LaunchesApiService
+import uk.co.bits.spacex.data.api.LaunchesService
 import uk.co.bits.spacex.data.response.LaunchResponse
-import uk.co.bits.spacex.data.service.LaunchesService.LaunchServiceApiError
+import uk.co.bits.spacex.data.api.LaunchesService.LaunchServiceApiError
 
 @ExperimentalCoroutinesApi
 class LaunchesServiceTest {

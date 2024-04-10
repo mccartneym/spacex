@@ -9,11 +9,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import uk.co.bits.spacex.LAUNCH_RESPONSE_LIST
-import uk.co.bits.spacex.data.mapper.LaunchMapper
+import uk.co.bits.spacex.domain.mapper.LaunchMapper
 import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository.UnableToLoadLaunchesError
 import uk.co.bits.spacex.data.response.LaunchResponse
-import uk.co.bits.spacex.data.service.LaunchesService
-import uk.co.bits.spacex.data.service.LaunchesService.LaunchServiceApiError
+import uk.co.bits.spacex.data.api.LaunchesService
+import uk.co.bits.spacex.data.api.LaunchesService.LaunchServiceApiError
 
 @ExperimentalCoroutinesApi
 class SpaceXLaunchesRepositoryTest {

@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.ui.launches
+package uk.co.bits.spacex.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,13 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import timber.log.Timber
 import uk.co.bits.spacex.R
-import uk.co.bits.spacex.data.model.Launch
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListError
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListHasContent
-import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListLoading
+import uk.co.bits.spacex.domain.model.Launch
+import uk.co.bits.spacex.ui.LaunchListViewState.ListEmpty
+import uk.co.bits.spacex.ui.LaunchListViewState.ListError
+import uk.co.bits.spacex.ui.LaunchListViewState.ListHasContent
+import uk.co.bits.spacex.ui.LaunchListViewState.ListLoading
 import uk.co.bits.spacex.ui.theme.SpaceXTheme
 
 @Composable

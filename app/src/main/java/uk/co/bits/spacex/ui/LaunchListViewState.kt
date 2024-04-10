@@ -1,6 +1,6 @@
-package uk.co.bits.spacex.ui.launches
+package uk.co.bits.spacex.ui
 
-import uk.co.bits.spacex.data.model.Launch
+import uk.co.bits.spacex.domain.model.Launch
 
 sealed class LaunchListViewState {
     data object ListLoading : LaunchListViewState()
