@@ -1,13 +1,8 @@
 package uk.co.bits.spacex.ui.launches
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import uk.co.bits.spacex.data.model.Launch
 import uk.co.bits.spacex.ui.launches.LaunchListViewState.ListEmpty
