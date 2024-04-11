@@ -1,5 +1,6 @@
 package uk.co.bits.spacex.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,9 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -50,22 +54,30 @@ fun LaunchList(state: LaunchListViewState) {
         )
 
         when (state) {
-            ListLoading -> CircularProgressIndicator(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(50.dp)
-                    .align(alignment = Alignment.CenterHorizontally)
-            )
+            ListLoading -> Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(50.dp)
+                        .align(alignment = Alignment.Center)
+                )
+            }
 
-            ListEmpty -> Text(
-                text = stringResource(R.string.empty_list),
-                style = typography.headlineLarge
-            )
+            ListEmpty -> Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    modifier = Modifier.align(alignment = Alignment.Center),
+                    text = stringResource(R.string.empty_list),
+                    style = typography.headlineLarge,
+                )
+            }
 
-            ListError -> Text(
-                text = stringResource(R.string.error),
-                style = typography.headlineSmall
-            )
+            ListError -> Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    modifier = Modifier.align(alignment = Alignment.Center),
+                    text = stringResource(R.string.error),
+                    style = typography.headlineSmall
+                )
+            }
 
             is ListHasContent -> LazyColumn {
                 items(state.launchList) { item ->
@@ -79,9 +91,19 @@ fun LaunchList(state: LaunchListViewState) {
 
 @Composable
 fun LaunchListItem(launch: Launch) {
-    Row {
+
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        val (image, topText, middleText, bottomText, outcome) = createRefs()
+        createVerticalChain(topText, middleText, bottomText)
+
         AsyncImage(
-            modifier = Modifier.fillMaxWidth(0.3f),
+            modifier = Modifier
+                .constrainAs(image) {}
+                .fillMaxWidth(0.3f),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(launch.smallImageUrl)
                 .crossfade(true)
@@ -91,21 +113,53 @@ fun LaunchListItem(launch: Launch) {
             contentScale = ContentScale.Crop,
         )
 
-        Column(
+        Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = launch.name,
-                style = typography.bodyLarge
-            )
-            Text(
-                text = stringResource(id = R.string.launch_date, launch.date),
-                style = typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+                .padding(horizontal = 24.dp)
+                .constrainAs(topText) {
+                    start.linkTo(image.end)
+                },
+            text = launch.name,
+            fontWeight = FontWeight.Bold,
+            style = typography.bodyLarge
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .constrainAs(middleText) {
+                    start.linkTo(image.end)
+                },
+            text = stringResource(id = R.string.launch_date, launch.date),
+            style = typography.bodyMedium,
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .constrainAs(bottomText) {
+                    start.linkTo(image.end)
+                },
+            text = stringResource(id = R.string.mission_success),
+            style = typography.bodyMedium,
+        )
+
+        val outComeDrawable = when (launch.success) {
+            true -> R.drawable.ic_baseline_check_24
+            false -> R.drawable.ic_baseline_clear_24
+            else -> R.drawable.ic_baseline_help_24
         }
+
+        Image(
+            modifier = Modifier
+                .padding(8.dp)
+                .constrainAs(outcome) {
+                    start.linkTo(bottomText.end)
+                    centerVerticallyTo(bottomText)
+                },
+            painter = painterResource(id = outComeDrawable),
+            contentDescription = null
+        )
     }
 }
 
