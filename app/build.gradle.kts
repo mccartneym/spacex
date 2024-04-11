@@ -10,7 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "uk.co.bits.spacex"
+        applicationId = "uk.co.bits.spacex.compose"
         minSdk = 33
         targetSdk = 34
         versionCode = 1
