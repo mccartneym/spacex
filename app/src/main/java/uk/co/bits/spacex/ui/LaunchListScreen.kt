@@ -1,14 +1,10 @@
 package uk.co.bits.spacex.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,37 +50,27 @@ fun LaunchList(state: LaunchListViewState) {
         )
 
         when (state) {
-            ListLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .size(50.dp)
-                        .align(alignment = Alignment.CenterHorizontally)
-                )
-            }
+            ListLoading -> CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(50.dp)
+                    .align(alignment = Alignment.CenterHorizontally)
+            )
 
-            ListEmpty -> {
-                Text(
-                    text = stringResource(R.string.empty_list),
-                    style = typography.headlineLarge
-                )
-            }
+            ListEmpty -> Text(
+                text = stringResource(R.string.empty_list),
+                style = typography.headlineLarge
+            )
 
-            ListError -> {
-                Text(
-                    text = stringResource(R.string.error),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-            }
+            ListError -> Text(
+                text = stringResource(R.string.error),
+                style = typography.headlineSmall
+            )
 
-            is ListHasContent -> {
-                val list = state.launchList
-                LazyColumn {
-                    items(list.size) {
-                        list.forEach {
-                            LaunchListItem(it)
-                        }
-                    }
+            is ListHasContent -> LazyColumn {
+                items(state.launchList) { item ->
+                    LaunchListItem(item)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                 }
             }
         }
@@ -95,6 +81,7 @@ fun LaunchList(state: LaunchListViewState) {
 fun LaunchListItem(launch: Launch) {
     Row {
         AsyncImage(
+            modifier = Modifier.fillMaxWidth(0.3f),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(launch.smallImageUrl)
                 .crossfade(true)
