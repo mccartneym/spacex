@@ -85,6 +85,7 @@ fun LaunchListItem(launch: Launch) {
             model = ImageRequest.Builder(LocalContext.current)
                 .data(launch.smallImageUrl)
                 .crossfade(true)
+                .placeholder(R.drawable.ic_baseline_downloading_24)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -97,10 +98,10 @@ fun LaunchListItem(launch: Launch) {
         ) {
             Text(
                 text = launch.name,
-                style = typography.bodyMedium
+                style = typography.bodyLarge
             )
             Text(
-                text = launch.date,
+                text = stringResource(id = R.string.launch_date, launch.date),
                 style = typography.bodySmall,
                 modifier = Modifier.padding(top = 4.dp)
             )
