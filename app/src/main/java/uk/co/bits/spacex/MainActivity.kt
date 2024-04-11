@@ -1,24 +1,28 @@
 package uk.co.bits.spacex
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import uk.co.bits.spacex.ui.LaunchListFragment
+import uk.co.bits.spacex.ui.LaunchListScreen
+import uk.co.bits.spacex.ui.theme.SpaceXTheme
 
 
 @AndroidEntryPoint
-//class MainActivity : ComponentActivity() {
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<LaunchListFragment>(R.id.container)
+        setContent {
+            SpaceXTheme {
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "launchList") {
+                    composable("launchList") { LaunchListScreen() }
+                }
             }
         }
     }
