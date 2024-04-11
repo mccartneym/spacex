@@ -31,7 +31,7 @@ class LaunchMapperTest {
     fun `given LaunchResponse object, when parsing to model, then mission success state is parsed successfully`() {
         val result = sut.toLaunch(LAUNCH_RESPONSE1)
 
-        assertEquals(MISSION_SUCCESS1, result.success)
+        assertEquals(MISSION_SUCCESS1, result.wasSuccessful)
     }
 
     @Test

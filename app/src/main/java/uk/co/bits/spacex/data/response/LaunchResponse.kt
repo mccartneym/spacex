@@ -6,7 +6,7 @@ data class LaunchResponse(
     @Json(name = "links")
     val links: Links,
     @Json(name = "success")
-    val success: Boolean?,
+    val wasSuccessful: Boolean?,
     @Json(name = "name")
     val name: String,
     @Json(name = "date_unix")

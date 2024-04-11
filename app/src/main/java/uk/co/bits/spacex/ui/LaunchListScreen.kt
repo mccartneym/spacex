@@ -144,7 +144,7 @@ fun LaunchListItem(launch: Launch) {
             style = typography.bodyMedium,
         )
 
-        val outComeDrawable = when (launch.success) {
+        val outComeDrawable = when (launch.wasSuccessful) {
             true -> R.drawable.ic_baseline_check_24
             false -> R.drawable.ic_baseline_clear_24
             else -> R.drawable.ic_baseline_help_24
@@ -172,19 +172,19 @@ fun ListHasContentPreview() {
                 listOf(
                     Launch(
                         smallImageUrl = null,
-                        success = true,
+                        wasSuccessful = true,
                         name = "Name1",
                         date = "Date1"
                     ),
                     Launch(
                         smallImageUrl = null,
-                        success = true,
+                        wasSuccessful = true,
                         name = "Name2",
                         date = "Date2"
                     ),
                     Launch(
                         smallImageUrl = null,
-                        success = true,
+                        wasSuccessful = true,
                         name = "Name3",
                         date = "Date3"
                     ),
