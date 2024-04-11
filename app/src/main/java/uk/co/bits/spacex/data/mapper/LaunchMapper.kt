@@ -8,8 +8,8 @@ class LaunchMapper @Inject constructor(private val dateMapper: DateMapper) {
 
     fun toLaunch(launchResponse: LaunchResponse) = Launch(
         smallImageUrl = launchResponse.links.patch.small,
-        success = launchResponse.success,
+        success = launchResponse.wasSuccessful,
         name = launchResponse.name,
-        date = dateMapper.parseUnixDate(launchResponse.date_unix)
+        date = dateMapper.parseUnixDate(launchResponse.dateUnix)
     )
 }
