@@ -108,6 +108,7 @@ fun LaunchListItem(launch: Launch) {
                 .data(launch.smallImageUrl)
                 .crossfade(true)
                 .placeholder(R.drawable.ic_baseline_downloading_24)
+                .error(R.drawable.ic_baseline_image_not_supported_24)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
