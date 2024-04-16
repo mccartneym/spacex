@@ -46,42 +46,52 @@ fun LaunchList(state: LaunchListViewState, scrollState: LazyListState) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(
-            text = stringResource(R.string.launches_title),
-            style = typography.headlineLarge,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .padding(8.dp)
-        )
-
         when (state) {
-            ListLoading -> Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .size(50.dp)
-                        .align(alignment = Alignment.Center)
-                )
+            ListLoading -> {
+                Title()
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .size(50.dp)
+                            .align(alignment = Alignment.Center)
+                    )
+                }
             }
 
-            ListEmpty -> Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    modifier = Modifier.align(alignment = Alignment.Center),
-                    text = stringResource(R.string.empty_list),
-                    style = typography.headlineLarge,
-                )
+            ListEmpty -> {
+                Title()
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier.align(alignment = Alignment.Center),
+                        text = stringResource(R.string.empty_list),
+                        style = typography.headlineLarge,
+                    )
+                }
             }
 
-            ListError -> Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    modifier = Modifier.align(alignment = Alignment.Center),
-                    text = stringResource(R.string.error),
-                    style = typography.headlineSmall
-                )
+            ListError -> {
+                Title()
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier.align(alignment = Alignment.Center),
+                        text = stringResource(R.string.error),
+                        style = typography.headlineSmall
+                    )
+                }
             }
 
             is ListHasContent -> {
-                ScrollToBottomButton(scrollState, state.launchList.size)
+                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Text(
+                        text = stringResource(R.string.launches_title),
+                        style = typography.headlineLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(8.dp)
+                    )
+                    ScrollToBottomButton(scrollState, state.launchList.size)
+                }
                 LazyColumn(state = scrollState) {
                     items(state.launchList) { item ->
                         LaunchListItem(item)
@@ -91,6 +101,17 @@ fun LaunchList(state: LaunchListViewState, scrollState: LazyListState) {
             }
         }
     }
+}
+
+@Composable
+fun ColumnScope.Title() {
+    Text(
+        text = stringResource(R.string.launches_title),
+        style = typography.headlineLarge,
+        modifier = Modifier
+            .align(alignment = Alignment.CenterHorizontally)
+            .padding(8.dp)
+    )
 }
 
 @Composable
@@ -106,12 +127,12 @@ fun ScrollToBottomButton(scrollState: LazyListState, listLength: Int) {
 
     FloatingActionButton(onClick = {
         scope.launch {
-            val scrollDestination = if (isAtTop) {
+            val destination = if (isAtTop) {
                 listLength
             } else {
                 0
             }
-            scrollState.animateScrollToItem(scrollDestination)
+            scrollState.scrollToItem(destination)
             isAtTop = !isAtTop
         }
     }) {
