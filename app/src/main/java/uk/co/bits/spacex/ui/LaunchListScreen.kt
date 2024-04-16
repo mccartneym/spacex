@@ -2,15 +2,13 @@ package uk.co.bits.spacex.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,6 +22,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import uk.co.bits.spacex.R
 import uk.co.bits.spacex.domain.model.Launch
 import uk.co.bits.spacex.ui.LaunchListViewState.ListEmpty
@@ -34,12 +34,13 @@ import uk.co.bits.spacex.ui.theme.SpaceXTheme
 
 @Composable
 fun LaunchListScreen(viewModel: LaunchListViewModel = hiltViewModel()) {
-    val state: LaunchListViewState by viewModel.listViewState.collectAsState()
-    LaunchList(state)
+    val viewState: LaunchListViewState by viewModel.listViewState.collectAsState()
+    val scrollState: LazyListState = rememberLazyListState()
+    LaunchList(viewState, scrollState)
 }
 
 @Composable
-fun LaunchList(state: LaunchListViewState) {
+fun LaunchList(state: LaunchListViewState, scrollState: LazyListState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -79,13 +80,42 @@ fun LaunchList(state: LaunchListViewState) {
                 )
             }
 
-            is ListHasContent -> LazyColumn {
-                items(state.launchList) { item ->
-                    LaunchListItem(item)
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            is ListHasContent -> {
+                ScrollToBottomButton(scrollState, state.launchList.size)
+                LazyColumn(state = scrollState) {
+                    items(state.launchList) { item ->
+                        LaunchListItem(item)
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ScrollToBottomButton(scrollState: LazyListState, listLength: Int) {
+    Timber.e("ScrollToBottomButton")
+    val scope = rememberCoroutineScope()
+    var isAtTop by remember { mutableStateOf(true) }
+    val icon = if (isAtTop) {
+        Icons.Filled.KeyboardArrowDown
+    } else {
+        Icons.Filled.KeyboardArrowUp
+    }
+
+    FloatingActionButton(onClick = {
+        scope.launch {
+            val scrollDestination = if (isAtTop) {
+                listLength
+            } else {
+                0
+            }
+            scrollState.animateScrollToItem(scrollDestination)
+            isAtTop = !isAtTop
+        }
+    }) {
+        Icon(icon, "Small floating action button.")
     }
 }
 
@@ -190,7 +220,8 @@ fun ListHasContentPreview() {
                         date = "Date3"
                     ),
                 )
-            )
+            ),
+            LazyListState()
         )
     }
 }
@@ -199,7 +230,7 @@ fun ListHasContentPreview() {
 @Composable
 fun ListLoadingPreview() {
     SpaceXTheme {
-        LaunchList(ListLoading)
+        LaunchList(ListLoading, LazyListState())
     }
 }
 
@@ -207,7 +238,7 @@ fun ListLoadingPreview() {
 @Composable
 fun ListEmptyPreview() {
     SpaceXTheme {
-        LaunchList(ListEmpty)
+        LaunchList(ListEmpty, LazyListState())
     }
 }
 
@@ -215,6 +246,6 @@ fun ListEmptyPreview() {
 @Composable
 fun ListErrorPreview() {
     SpaceXTheme {
-        LaunchList(ListError)
+        LaunchList(ListError, LazyListState())
     }
 }
