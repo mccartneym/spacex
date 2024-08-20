@@ -20,8 +20,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
-    private const val BASE_URL = "https://api.spacexdata.com/v4/"
-    private const val READ_TIMEOUT: Long = 30000 // 30 seconds
+    private const val BASE_URL = "https://api.spacexdata.com/v5/"
+    private const val READ_TIMEOUT: Long = 30_000 // 30 seconds
 
     @Provides
     @Singleton

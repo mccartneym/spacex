@@ -1,14 +1,36 @@
 package uk.co.bits.spacex.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,14 +55,21 @@ import uk.co.bits.spacex.ui.LaunchListViewState.ListLoading
 import uk.co.bits.spacex.ui.theme.SpaceXTheme
 
 @Composable
-fun LaunchListScreen(viewModel: LaunchListViewModel = hiltViewModel()) {
+fun LaunchListScreen(
+    viewModel: LaunchListViewModel = hiltViewModel(),
+    onViewLaunchClicked: (String?) -> Unit
+) {
     val viewState: LaunchListViewState by viewModel.listViewState.collectAsState()
     val scrollState: LazyListState = rememberLazyListState()
-    LaunchList(viewState, scrollState)
+    LaunchList(viewState, scrollState, onViewLaunchClicked)
 }
 
 @Composable
-fun LaunchList(state: LaunchListViewState, scrollState: LazyListState) {
+private fun LaunchList(
+    state: LaunchListViewState,
+    scrollState: LazyListState,
+    onViewLaunchClicked: (String?) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +123,7 @@ fun LaunchList(state: LaunchListViewState, scrollState: LazyListState) {
                 }
                 LazyColumn(state = scrollState) {
                     items(state.launchList) { item ->
-                        LaunchListItem(item)
+                        LaunchListItem(item, onViewLaunchClicked)
                         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                     }
                 }
@@ -141,15 +170,17 @@ fun ScrollToBottomButton(scrollState: LazyListState, listLength: Int) {
 }
 
 @Composable
-fun LaunchListItem(launch: Launch) {
-
+fun LaunchListItem(
+    launch: Launch,
+    onViewLaunchClicked: (String?) -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        val (image, topText, middleText, bottomText, outcome) = createRefs()
-        createVerticalChain(topText, middleText, bottomText)
+        val (image, topText, middleText, bottomText, outcome, footage) = createRefs()
+        createVerticalChain(topText, middleText, bottomText, footage)
 
         AsyncImage(
             modifier = Modifier
@@ -196,6 +227,24 @@ fun LaunchListItem(launch: Launch) {
             style = typography.bodyMedium,
         )
 
+        Button(
+            onClick = {
+                onViewLaunchClicked(launch.videoId)
+            },
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .constrainAs(footage) {
+                    start.linkTo(image.end)
+                },
+            enabled = launch.videoId != null
+        ) {
+            Text(
+                modifier = Modifier,
+                text = stringResource(id = R.string.launch_footage),
+                style = typography.bodyMedium,
+            )
+        }
+
         val outComeDrawable = when (launch.wasSuccessful) {
             true -> R.drawable.ic_baseline_check_24
             false -> R.drawable.ic_baseline_clear_24
@@ -226,24 +275,27 @@ fun ListHasContentPreview() {
                         smallImageUrl = null,
                         wasSuccessful = true,
                         name = "Name1",
-                        date = "Date1"
+                        date = "Date1",
+                        videoId = null
                     ),
                     Launch(
                         smallImageUrl = null,
                         wasSuccessful = true,
                         name = "Name2",
-                        date = "Date2"
+                        date = "Date2",
+                        videoId = null
                     ),
                     Launch(
                         smallImageUrl = null,
                         wasSuccessful = true,
                         name = "Name3",
-                        date = "Date3"
+                        date = "Date3",
+                        videoId = null
                     ),
                 )
             ),
             LazyListState()
-        )
+        ) {}
     }
 }
 
@@ -251,7 +303,7 @@ fun ListHasContentPreview() {
 @Composable
 fun ListLoadingPreview() {
     SpaceXTheme {
-        LaunchList(ListLoading, LazyListState())
+        LaunchList(ListLoading, LazyListState()) {}
     }
 }
 
@@ -259,7 +311,7 @@ fun ListLoadingPreview() {
 @Composable
 fun ListEmptyPreview() {
     SpaceXTheme {
-        LaunchList(ListEmpty, LazyListState())
+        LaunchList(ListLoading, LazyListState()) {}
     }
 }
 
@@ -267,6 +319,6 @@ fun ListEmptyPreview() {
 @Composable
 fun ListErrorPreview() {
     SpaceXTheme {
-        LaunchList(ListError, LazyListState())
+        LaunchList(ListLoading, LazyListState()) {}
     }
 }

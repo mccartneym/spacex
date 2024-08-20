@@ -10,6 +10,7 @@ class LaunchMapper @Inject constructor(private val dateMapper: DateMapper) {
         smallImageUrl = launchResponse.links.patch.small,
         wasSuccessful = launchResponse.wasSuccessful,
         name = launchResponse.name,
-        date = dateMapper.parseUnixDate(launchResponse.dateUnix)
+        date = dateMapper.parseUnixDate(launchResponse.dateUnix),
+        videoId = launchResponse.links.youtubeId
     )
 }

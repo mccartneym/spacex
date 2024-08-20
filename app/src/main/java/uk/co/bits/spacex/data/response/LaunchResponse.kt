@@ -13,6 +13,11 @@ data class LaunchResponse(
     val dateUnix: Long
 )
 
-data class Links(val patch: Patch)
+data class Links(
+    @Json(name = "patch")
+    val patch: Patch,
+    @Json(name = "youtube_id")
+    val youtubeId: String?
+)
 
 data class Patch(val small: String?)

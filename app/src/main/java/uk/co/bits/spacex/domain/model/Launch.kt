@@ -4,5 +4,6 @@ data class Launch(
     val smallImageUrl: String?,
     val wasSuccessful: Boolean?,
     val name: String,
-    val date: String
+    val date: String,
+    val videoId: String?,
 )
