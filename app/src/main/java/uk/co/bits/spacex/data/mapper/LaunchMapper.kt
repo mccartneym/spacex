@@ -1,4 +1,4 @@
-package uk.co.bits.spacex.domain.mapper
+package uk.co.bits.spacex.data.mapper
 
 import uk.co.bits.spacex.domain.model.Launch
 import uk.co.bits.spacex.data.response.LaunchResponse

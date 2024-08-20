@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import uk.co.bits.spacex.data.api.LaunchesApiService
-import uk.co.bits.spacex.domain.mapper.LaunchMapper
+import uk.co.bits.spacex.data.mapper.LaunchMapper
 import uk.co.bits.spacex.domain.repository.LaunchesRepository
 import uk.co.bits.spacex.data.repository.SpaceXLaunchesRepository
 import uk.co.bits.spacex.data.api.LaunchesService

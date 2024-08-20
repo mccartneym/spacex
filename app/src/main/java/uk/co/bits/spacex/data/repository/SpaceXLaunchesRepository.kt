@@ -1,6 +1,6 @@
 package uk.co.bits.spacex.data.repository
 
-import uk.co.bits.spacex.domain.mapper.LaunchMapper
+import uk.co.bits.spacex.data.mapper.LaunchMapper
 import uk.co.bits.spacex.domain.model.Launch
 import uk.co.bits.spacex.data.api.LaunchesService
 import uk.co.bits.spacex.domain.repository.LaunchesRepository

@@ -6,8 +6,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import uk.co.bits.spacex.*
-import uk.co.bits.spacex.domain.mapper.DateMapper
-import uk.co.bits.spacex.domain.mapper.LaunchMapper
+import uk.co.bits.spacex.data.mapper.DateMapper
+import uk.co.bits.spacex.data.mapper.LaunchMapper
 
 class LaunchMapperTest {
 
